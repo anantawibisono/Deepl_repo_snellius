@@ -35,8 +35,10 @@ def sample_reparameterize(mean, std):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    z = None
-    raise NotImplementedError
+
+    epsilon = torch.randn_like(mean)
+
+    z = mean + std * epsilon
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -58,8 +60,8 @@ def KLD(mean, log_std):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    KLD = None
-    raise NotImplementedError
+    std = torch.exp(log_std)
+    KLD = -0.5 * torch.sum(1 + 2 * log_std - mean.pow(2) - std.pow(2), dim=-1)
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -78,8 +80,9 @@ def elbo_to_bpd(elbo, img_shape):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    bpd = None
-    raise NotImplementedError
+    num_dimensions = img_shape[1] * img_shape[2] * img_shape[3]
+    
+    bpd = elbo / (num_dimensions * np.log(2))
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -110,8 +113,19 @@ def visualize_manifold(decoder, grid_size=20):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    img_grid = None
-    raise NotImplementedError
+    percentiles = torch.linspace(0.5/grid_size, 1 - 0.5/grid_size, grid_size)
+    
+    z_sample = torch.distributions.Normal(0, 1).icdf(percentiles)
+    
+    z1, z2 = torch.meshgrid(z_sample, z_sample, indexing='ij')
+    
+    z = torch.stack([z1.flatten(), z2.flatten()], dim=1)
+    
+    decoded_imgs = torch.sigmoid(decoder(z))
+    
+    decoded_imgs = decoded_imgs.view(-1, *decoded_imgs.shape[1:])
+    
+    img_grid = make_grid(decoded_imgs, nrow=grid_size)
     #######################
     # END OF YOUR CODE    #
     #######################
