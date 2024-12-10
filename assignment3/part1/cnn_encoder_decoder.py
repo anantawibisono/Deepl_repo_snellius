@@ -38,7 +38,37 @@ class CNNEncoder(nn.Module):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        raise NotImplementedError
+        # Store z_dim for later use
+        self.z_dim = z_dim
+        
+        # Encoder network
+        self.net = nn.Sequential(
+            # First convolutional layer: 28x28 -> 14x14
+            nn.Conv2d(num_input_channels, num_filters, kernel_size=3, padding=1, stride=2),
+            nn.ReLU(),
+            
+            # Second convolutional layer: 14x14 -> 14x14
+            nn.Conv2d(num_filters, num_filters, kernel_size=3, padding=1),
+            nn.ReLU(),
+            
+            # Third convolutional layer: 14x14 -> 7x7
+            nn.Conv2d(num_filters, 2*num_filters, kernel_size=3, padding=1, stride=2),
+            nn.ReLU(),
+            
+            # Fourth convolutional layer: 7x7 -> 7x7
+            nn.Conv2d(2*num_filters, 2*num_filters, kernel_size=3, padding=1),
+            nn.ReLU(),
+            
+            # Fifth convolutional layer: 7x7 -> 4x4
+            nn.Conv2d(2*num_filters, 2*num_filters, kernel_size=3, padding=1, stride=2),
+            nn.ReLU(),
+            
+            nn.Flatten()
+        )
+        
+        # Separate layers for mean and log_std
+        self.fc_mean = nn.Linear(2*16*num_filters, z_dim)
+        self.fc_log_std = nn.Linear(2*16*num_filters, z_dim)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -56,9 +86,13 @@ class CNNEncoder(nn.Module):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        mean = None
-        log_std = None
-        raise NotImplementedError
+        # Extract features
+        features = self.net(x)
+        
+        # Compute mean and log_std
+        mean = self.fc_mean(features)
+        log_std = self.fc_log_std(features)
+
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -84,7 +118,28 @@ class CNNDecoder(nn.Module):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        raise NotImplementedError
+        # Fully connected layer to reshape latent vector
+        self.fc = nn.Sequential(
+            nn.Linear(z_dim, 2*16*num_filters),
+            nn.ReLU()
+        )
+        
+        # Decoder network
+        self.net = nn.Sequential(
+            # First transposed convolution: 4x4 -> 7x7
+            nn.ConvTranspose2d(2*num_filters, 2*num_filters, kernel_size=3, stride=2, 
+                               padding=1, output_padding=0),
+            nn.ReLU(),
+            
+            # Second transposed convolution: 7x7 -> 14x14
+            nn.ConvTranspose2d(2*num_filters, num_filters, kernel_size=3, stride=2, 
+                               padding=1, output_padding=1),
+            nn.ReLU(),
+            
+            # Third transposed convolution: 14x14 -> 28x28
+            nn.ConvTranspose2d(num_filters, num_input_channels, kernel_size=3, stride=2, 
+                               padding=1, output_padding=1)
+        )
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -102,8 +157,13 @@ class CNNDecoder(nn.Module):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        x = None
-        raise NotImplementedError
+        # Reshape latent vector
+        features = self.fc(z)
+        features = features.view(features.size(0), -1, 4, 4)
+
+        # Reconstruct image
+        x = self.net(features)
+
         #######################
         # END OF YOUR CODE    #
         #######################
