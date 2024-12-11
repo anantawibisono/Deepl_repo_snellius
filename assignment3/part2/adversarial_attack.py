@@ -30,7 +30,15 @@ def fgsm_attack(image, data_grad, epsilon = 0.25):
     # Get the sign of the data gradient (element-wise)
     # Create the perturbed image, scaled by epsilon
     # Make sure values stay within valid range
-    raise NotImplementedError()
+    # Get the sign of the data gradient (element-wise)
+    sign_data_grad = data_grad.sign()
+
+    # Create the perturbed image
+    perturbed_image = image + epsilon * sign_data_grad
+
+    # Clip the values of the perturbed image to ensure they are within valid range [0, 1]
+    perturbed_image = torch.clamp(perturbed_image, 0, 1)
+
     return perturbed_image
 
 
@@ -92,7 +100,15 @@ def test_attack(model, test_loader, attack_function, attack_args):
             # Get the correct gradients wrt the data
             # Perturb the data using the FGSM attack
             # Re-classify the perturbed image
-            raise NotImplementedError()
+            # Get the gradient of the loss w.r.t the input data
+            data_grad = data.grad.data
+
+            # Use the FGSM attack to perturb the data
+            epsilon = attack_args.get("epsilon", 0.25)  # Default epsilon if not provided
+            perturbed_data = fgsm_attack(data, data_grad, epsilon)
+
+            # Re-classify the perturbed image
+            output = model(perturbed_data)
 
         elif attack_function == PGD:
             # Get the perturbed data using the PGD attack
