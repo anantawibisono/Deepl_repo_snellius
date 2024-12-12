@@ -113,19 +113,18 @@ def visualize_manifold(decoder, grid_size=20):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    percentiles = torch.linspace(0.5/grid_size, 1 - 0.5/grid_size, grid_size)
-    
-    z_sample = torch.distributions.Normal(0, 1).icdf(percentiles)
-    
-    z1, z2 = torch.meshgrid(z_sample, z_sample, indexing='ij')
-    
-    z = torch.stack([z1.flatten(), z2.flatten()], dim=1)
-    
-    decoded_imgs = torch.sigmoid(decoder(z))
-    
-    decoded_imgs = decoded_imgs.view(-1, *decoded_imgs.shape[1:])
-    
-    img_grid = make_grid(decoded_imgs, nrow=grid_size)
+    # Create a grid of latent space values
+    z_grid = torch.linspace(-2, 2, grid_size)
+    z1, z2 = torch.meshgrid(z_grid, z_grid, indexing='ij')
+    z = torch.stack((z1.flatten(), z2.flatten()), dim=1)
+
+    # Generate the output images
+    with torch.no_grad():
+        output = decoder(z)
+        output = torch.softmax(output, dim=1)
+
+    # Arrange the output images into a grid
+    img_grid = output.view(grid_size, grid_size, *output.shape[1:])
     #######################
     # END OF YOUR CODE    #
     #######################
