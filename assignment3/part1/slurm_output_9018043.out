@@ -1,0 +1,109 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
+Failed to download (trying next):
+HTTP Error 403: Forbidden
+
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/train-images-idx3-ubyte.gz
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/train-images-idx3-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw/train-images-idx3-ubyte.gz
+  0%|          | 0.00/9.91M [00:00<?, ?B/s]  1%|          | 65.5k/9.91M [00:00<00:39, 247kB/s]  3%|▎         | 262k/9.91M [00:00<00:14, 665kB/s]  11%|█         | 1.05M/9.91M [00:00<00:04, 2.20MB/s] 42%|████▏     | 4.13M/9.91M [00:00<00:00, 7.77MB/s]100%|██████████| 9.91M/9.91M [00:00<00:00, 11.0MB/s]
+Extracting /scratch-local/scur2598.9018043/MNIST/raw/train-images-idx3-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
+Failed to download (trying next):
+HTTP Error 403: Forbidden
+
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/train-labels-idx1-ubyte.gz
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/train-labels-idx1-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw/train-labels-idx1-ubyte.gz
+  0%|          | 0.00/28.9k [00:00<?, ?B/s]100%|██████████| 28.9k/28.9k [00:00<00:00, 322kB/s]
+Extracting /scratch-local/scur2598.9018043/MNIST/raw/train-labels-idx1-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
+Failed to download (trying next):
+HTTP Error 403: Forbidden
+
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/t10k-images-idx3-ubyte.gz
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/t10k-images-idx3-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw/t10k-images-idx3-ubyte.gz
+  0%|          | 0.00/1.65M [00:00<?, ?B/s]  4%|▍         | 65.5k/1.65M [00:00<00:06, 243kB/s] 14%|█▍        | 229k/1.65M [00:00<00:02, 568kB/s]  58%|█████▊    | 950k/1.65M [00:00<00:00, 1.98MB/s]100%|██████████| 1.65M/1.65M [00:00<00:00, 2.60MB/s]
+Extracting /scratch-local/scur2598.9018043/MNIST/raw/t10k-images-idx3-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
+Failed to download (trying next):
+HTTP Error 403: Forbidden
+
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/t10k-labels-idx1-ubyte.gz
+Downloading https://ossci-datasets.s3.amazonaws.com/mnist/t10k-labels-idx1-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw/t10k-labels-idx1-ubyte.gz
+  0%|          | 0.00/4.54k [00:00<?, ?B/s]100%|██████████| 4.54k/4.54k [00:00<00:00, 23.1MB/s]
+Extracting /scratch-local/scur2598.9018043/MNIST/raw/t10k-labels-idx1-ubyte.gz to /scratch-local/scur2598.9018043/MNIST/raw
+
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+[INFO] The progress bar has been suppressed. For updates on the training progress, check the TensorBoard file at VAE_logs/lightning_logs/version_9018043. If you want to see the progress bar, use the argparse option "progress_bar".
+
+[rank: 0] Seed set to 42
+You are using a CUDA device ('NVIDIA A100-SXM4-40GB') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name    | Type       | Params | Mode 
+-----------------------------------------------
+0 | encoder | CNNEncoder | 106 K  | train
+1 | decoder | CNNDecoder | 63.1 K | train
+-----------------------------------------------
+169 K     Trainable params
+0         Non-trainable params
+169 K     Total params
+0.676     Total estimated model params size (MB)
+25        Modules in train mode
+0         Modules in eval mode
+SLURM auto-requeueing enabled. Setting signal handlers.
+`Trainer.fit` stopped: `max_epochs=80` reached.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+SLURM auto-requeueing enabled. Setting signal handlers.
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       Test metric             DataLoader 0
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        test_bpd            0.8181995153427124
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Traceback (most recent call last):
+  File "/gpfs/home4/scur2598/Deepl_repo_snellius/assignment3/part1/train_pl.py", line 276, in <module>
+    train_vae(args)
+  File "/gpfs/home4/scur2598/Deepl_repo_snellius/assignment3/part1/train_pl.py", line 233, in train_vae
+    img_grid = visualize_manifold(model.decoder)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/scur2598/.conda/envs/dl2024/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home4/scur2598/Deepl_repo_snellius/assignment3/part1/utils.py", line 130, in visualize_manifold
+    img_grid = img_grid.permute(2, 0, 1).unsqueeze(0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: permute(sparse_coo): number of dimensions in the tensor input does not match the length of the desired ordering of dimensions i.e. input.dim() = 5 is not equal to len(dims) = 3
+srun: error: gcn22: task 0: Exited with exit code 1
+srun: Terminating StepId=9018043.0
+
+JOB STATISTICS
+==============
+Job ID: 9018043
+Cluster: snellius
+User/Group: scur2598/scur2598
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:17:09
+CPU Efficiency: 18.74% of 01:31:30 core-walltime
+Job Wall-clock time: 00:05:05
+Memory Utilized: 925.50 MB
+Memory Efficiency: 2.89% of 31.25 GB
