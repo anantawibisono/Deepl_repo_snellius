@@ -114,7 +114,6 @@ def visualize_manifold(decoder, grid_size=20):
     # PUT YOUR CODE HERE  #
     #######################
     # Create a grid of latent space values
-    # Create a grid of latent space values
     z_grid = torch.linspace(-2, 2, grid_size)
     z1, z2 = torch.meshgrid(z_grid, z_grid, indexing='ij')
     z = torch.stack((z1.flatten(), z2.flatten()), dim=1)
@@ -129,6 +128,7 @@ def visualize_manifold(decoder, grid_size=20):
 
     # Reshape the tensor to match the expected format for torch.utils.save_image
     img_grid = img_grid.permute(2, 0, 1).unsqueeze(0)
+    print(f"img_grid shape: {img_grid.shape}")
     #######################
     # END OF YOUR CODE    #
     #######################
