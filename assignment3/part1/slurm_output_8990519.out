@@ -1,0 +1,46 @@
+***************************************************************************************************** 
+* WARNING: The 2022 software stack is deprecated. Please consider switching to
+the latest 2024 * 
+* software stack, or the older 2023 software stack. * 
+* * 
+* If you have any question, please contact us via
+http://servicedesk.surfsara.nl. * 
+***************************************************************************************************** 
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+Could not find conda environment: dl2023
+You can list all discoverable environments with `conda info --envs`.
+
+Traceback (most recent call last):
+  File "/gpfs/home4/scur2598/Deepl_repo_snellius/assignment3/part1/train_pl.py", line 21, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'
+srun: error: gcn12: task 0: Exited with exit code 1
+srun: Terminating StepId=8990519.0
+
+JOB STATISTICS
+==============
+Job ID: 8990519
+Cluster: snellius
+User/Group: scur2598/scur2598
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:01
+CPU Efficiency: 0.46% of 00:03:36 core-walltime
+Job Wall-clock time: 00:00:12
+Memory Utilized: 2.08 MB
+Memory Efficiency: 0.01% of 31.25 GB
