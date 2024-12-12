@@ -244,7 +244,7 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     # Model hyperparameters
-    parser.add_argument('--z_dim', default=20, type=int,
+    parser.add_argument('--z_dim', default=2, type=int,
                         help='Dimensionality of latent space')
     parser.add_argument('--num_filters', default=32, type=int,
                         help='Number of channels/filters to use in the CNN encoder/decoder.')
