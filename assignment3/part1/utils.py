@@ -113,26 +113,25 @@ def visualize_manifold(decoder, grid_size=20):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    # Check that the decoder has a 2-dimensional latent space
-    if decoder.input_dim != 2:
-        raise ValueError("Decoder must have a 2-dimensional latent space.")
-
     # Create a grid of latent space values
     z_grid = torch.linspace(-2, 2, grid_size)
-    z = torch.stack(torch.meshgrid(z_grid, z_grid, indexing='ij'), dim=-1)
-    z = z.reshape(-1, 2)
+    z1, z2 = torch.meshgrid(z_grid, z_grid, indexing='ij')
+    z = torch.stack([z1.flatten(), z2.flatten()], dim=1).to(decoder.device)
 
     # Generate the output images
     with torch.no_grad():
         output = decoder(z)
-        print(f"output shape: {output.shape}")
         output = torch.sigmoid(output)  # Apply sigmoid normalization
 
-    # Arrange the output images into a grid
+    # Reshape the output to create the grid
     img_grid = output.view(grid_size, grid_size, *output.shape[1:])
 
-    # Reshape the tensor to match the expected format for torch.utils.save_image
-    img_grid = img_grid.permute(2, 0, 1).unsqueeze(0)
+    # Permute the dimensions to match the expected format
+    img_grid = img_grid.permute(2, 3, 0, 1, 4).contiguous()
+
+    # Flatten the channel dimension if necessary
+    if img_grid.shape[0] == 1:
+        img_grid = img_grid.squeeze(0)
     #######################
     # END OF YOUR CODE    #
     #######################
