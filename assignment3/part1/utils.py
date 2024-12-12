@@ -124,14 +124,7 @@ def visualize_manifold(decoder, grid_size=20):
         output = torch.sigmoid(output)  # Apply sigmoid normalization
 
     # Reshape the output to create the grid
-    img_grid = output.view(grid_size, grid_size, *output.shape[1:])
-
-    # Permute the dimensions to match the expected format
-    img_grid = img_grid.permute(2, 3, 0, 1, 4).contiguous()
-
-    # Flatten the channel dimension if necessary
-    if img_grid.shape[0] == 1:
-        img_grid = img_grid.squeeze(0)
+    img_grid = output.view(grid_size * grid_size, *output.shape[1:])
     #######################
     # END OF YOUR CODE    #
     #######################
