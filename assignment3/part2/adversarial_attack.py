@@ -116,13 +116,23 @@ def test_attack(model, test_loader, attack_function, attack_args):
             # Perturb the data using the FGSM attack
             # Re-classify the perturbed image
             # Get the correct gradients wrt the data
-            loss.backward(retain_graph=True)
-            data_grad = data.grad.data
+            # Zero out any existing gradients
+            model.zero_grad()
+            
+            # Compute loss with detached computation
+            output = model(data)
+            loss = F.nll_loss(output, target)
+            
+            # Compute gradients specifically for the input
+            data_grad = torch.autograd.grad(loss, data, 
+                                            retain_graph=False, 
+                                            create_graph=False)[0]
 
             epsilon = attack_args.get("epsilon", 0.25)  # Default epsilon if not provided
             perturbed_data = fgsm_attack(data, data_grad, epsilon)
 
-            output = model(perturbed_data)
+            # Recompute output for the perturbed data
+            output = model(perturbed_data.detach())
 
         elif attack_function == PGD:
             # Get the perturbed data using the PGD attack
