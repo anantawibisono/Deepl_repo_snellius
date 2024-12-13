@@ -115,6 +115,9 @@ def test_attack(model, test_loader, attack_function, attack_args):
             # Get the correct gradients wrt the data
             # Perturb the data using the FGSM attack
             # Re-classify the perturbed image
+            # Get the correct gradients wrt the data
+            loss = criterion(output, labels)
+            loss.backward()
             data_grad = data.grad.data
 
             epsilon = attack_args.get("epsilon", 0.25)  # Default epsilon if not provided
