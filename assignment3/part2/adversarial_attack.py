@@ -51,7 +51,25 @@ def fgsm_loss(model, criterion, inputs, labels, defense_args, return_preds = Tru
     # Combine the two losses
     # Hint: the inputs are used in two different forward passes,
     # so you need to make sure those don't clash
-    raise NotImplementedError()
+    alpha = defense_args[ALPHA]
+    epsilon = defense_args[EPSILON]
+    inputs.requires_grad = True
+
+    # Calculate the loss for the original image
+    original_outputs = model(inputs)
+    original_loss = criterion(original_outputs, labels)
+
+    # Calculate the perturbation
+    original_loss.backward()
+    perturbation = epsilon * inputs.grad.data.sign()
+
+    # Calculate the loss for the perturbed image
+    perturbed_inputs = torch.clamp(inputs + perturbation, 0, 1)
+    perturbed_outputs = model(perturbed_inputs)
+    perturbed_loss = criterion(perturbed_outputs, labels)
+
+    # Combine the two losses
+    loss = (1 - alpha) * original_loss + alpha * perturbed_loss
     if return_preds:
         _, preds = torch.max(original_outputs, 1)
         return loss, preds
