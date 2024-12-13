@@ -113,17 +113,14 @@ def visualize_manifold(decoder, grid_size=20):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    # Create a grid of latent space values
     z_grid = torch.linspace(-2, 2, grid_size)
     z1, z2 = torch.meshgrid(z_grid, z_grid, indexing='ij')
     z = torch.stack([z1.flatten(), z2.flatten()], dim=1).to(decoder.device)
 
-    # Generate the output images
     with torch.no_grad():
         output = decoder(z)
         output = torch.sigmoid(output)  # Apply sigmoid normalization
 
-    # Reshape the output to create the grid
     img_grid = output.view(grid_size * grid_size, *output.shape[1:])
     #######################
     # END OF YOUR CODE    #
